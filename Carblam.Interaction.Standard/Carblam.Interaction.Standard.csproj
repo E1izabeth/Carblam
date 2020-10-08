@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="expandGroups.xslt" />
+    <None Remove="expandVisitors.xslt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="expandGroups.xslt" />
+    <Content Include="expandVisitors.xslt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CarblamSvc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="call &quot;$(DevEnvDir)..\Tools\VsDevCmd.bat&quot;&#xD;&#xA;msxsl.exe $(ProjectDir)CarblamSvc.xsd $(ProjectDir)expandGroups.xslt -o $(ProjectDir)CarblamSvc.expanded.xsd&#xD;&#xA;xsd /c $(ProjectDir)CarblamSvc.expanded.xsd /o:$(ProjectDir)\&#xD;&#xA;msxsl.exe $(ProjectDir)CarblamSvc.xsd $(ProjectDir)expandVisitors.xslt -o $(ProjectDir)CarblamSvc_visitors.cs" />
+  </Target>
+
+</Project>

@@ -1,0 +1,69 @@
+﻿
+LoginPage
+	txtLogin
+	txtPassword
+	btnLogin
+
+LogoutPage
+	btnLogout
+
+RegisterPage
+	txtRegLogin
+	txtRegEmail
+	txtRegPwd1
+	txtRegPwd2
+	btnRegister
+
+RestorePage
+	txtResLogin
+	txtResEmail1
+	txtResEmail2
+	btnRestore
+
+CreateOrderPage
+	btnLookupCancel
+	btnLookupTake
+	txtFromAddr
+	btnLookupFrom
+	txtToAddr
+	btnLookupTo
+	txtRecipient
+	txtDescr
+	txtMsg
+	btnCreate
+
+OrderDetailsPage
+	btnOrdConfirm
+	btnOrdCancel
+	btnOrdAccept
+	btnOrdLoading
+	btnOrdLoaded
+	btnOrdUnloading
+	btnOrdDone
+
+OrdersListPage
+	btnOrdLstDetails
+
+DriverPage
+	txtDrvDesign
+	txtDrvDescr
+	btnDrvStart
+	btnDrvStop
+	btnDrvAccept
+	btnDrvDetails
+
+PropfilePage
+	lblMailOptions
+	txtMailOld
+	txtMailNew1
+	txtMailNew2
+	txtMailPwd
+	btnMailChangeMail
+	lblPwdOptions
+	txtPwdOldPass
+	txtPwdNewPass1
+	txtPwdNewPass2
+	txtPwdEmail
+	btnPwdChangePass
+	txtActivationEmail
+	btnActivateProfile

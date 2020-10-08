@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      x:Class="Carblam.Views.Orders.OrderDetailsPage"
+      xmlns:vu="clr-namespace:Carblam.Views.Util"
+      Visual="Material" x:Name="pageRoot">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <vu:OrderRouteView Grid.Row="0" OnMapLocationsChangedCommand="{Binding MapLocsChangedCommand}"
+                       BringMapLocsIntoViewMapCommand="{Binding BringLocsIntoViewMapCommand, Mode=OneWayToSource}"
+                       MapLocations="{Binding DisplayedMapLocs}" MapRoutes="{Binding DisplayedMapRoutes}">
+    </vu:OrderRouteView>
+
+    <StackLayout Grid.Row="1" >
+        <StackLayout Orientation="Horizontal">
+            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding CreationStampText}" />
+            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="-" />
+            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding TillStampText}" />
+        </StackLayout>
+        <Button Text="Confirm" IsVisible="{Binding ConfirmCommand.State.CanBeExecuted}" Command="{Binding ConfirmCommand}" AutomationId="btnOrdConfirm" />
+        <Button Text="Cancel" IsVisible="{Binding CancelCommand.State.CanBeExecuted}" Command="{Binding CancelCommand}" AutomationId="btnOrdCancel" />
+        <Button Text="Accept" IsVisible="{Binding AcceptCommand.State.CanBeExecuted}" Command="{Binding AcceptCommand}" AutomationId="btnOrdAccept" />
+        <Button Text="Loading" IsVisible="{Binding StartLoadCommand.State.CanBeExecuted}" Command="{Binding StartLoadCommand}" AutomationId="btnOrdLoading" />
+        <Button Text="In a way" IsVisible="{Binding FinishLoadCommand.State.CanBeExecuted}" Command="{Binding FinishLoadCommand}" AutomationId="btnOrdLoaded" />
+        <Button Text="Unloading" IsVisible="{Binding DeliverCommand.State.CanBeExecuted}" Command="{Binding DeliverCommand}" AutomationId="btnOrdUnloading" />
+        <Button Text="Done" IsVisible="{Binding FinishCommand.State.CanBeExecuted}" Command="{Binding FinishCommand}" AutomationId="btnOrdDone" />
+    </StackLayout>
+
+    <Expander Grid.Row="2" x:Name="paramsArea" IsExpanded="True">
+        <Expander.Header>
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Text="Order parameters" />
+
+                <Label Grid.Column="1" FontAttributes="Bold">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding IsExpanded,Source={x:Reference paramsArea}}" Value="True" TargetType="Label">
+                            <Setter Property="Label.Text" Value="v" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsExpanded,Source={x:Reference paramsArea}}" Value="False" TargetType="Label">
+                            <Setter Property="Label.Text" Value="^" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </Expander.Header>
+        <Expander.Content>
+            <ScrollView>
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="1" Grid.Column="0" Text="From:" />
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Item.Info.Spec.FromAddress}" IsEnabled="False" />
+
+                    <Label Grid.Row="3" Grid.Column="0" Text="To:" />
+                    <Entry Grid.Row="3" Grid.Column="1" Text="{Binding Item.Info.Spec.ToAddress}" IsEnabled="False" />
+
+                    <Label Grid.Row="5" Grid.Column="0" Text="Receiver:" />
+                    <Entry Grid.Row="5" Grid.Column="1" Text="{Binding Item.Info.Spec.ReceiverLogin}" IsEnabled="False" />
+
+                    <Editor Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding Item.Info.Spec.Parcel.Description}" IsEnabled="False" />
+
+                    <Label Grid.Row="9" Grid.Column="0" Text="Private message:" />
+                    <Editor Grid.Row="10" Grid.ColumnSpan="2" Text="{Binding Item.Info.Spec.ConfirmMessage}" IsEnabled="False" />
+
+                    <Label Grid.Row="12" Grid.Column="0" Text="History:" />
+                    <Editor Grid.Row="12" Grid.Column="1" Text="{Binding HistoryText}" IsEnabled="False" />
+                </Grid>
+            </ScrollView>
+        </Expander.Content>
+    </Expander>
+</Grid>

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      x:Class="Carblam.Views.Orders.DriverSessionPage"
+      xmlns:vu="clr-namespace:Carblam.Views.Util"
+      Visual="Material">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <RefreshView Grid.Row="0" IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding RefreshCommand}" IsVisible="{Binding IsWorking}"
+                 VerticalOptions="FillAndExpand">
+        <CollectionView ItemsSource="{Binding Orders}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="2" BackgroundColor="#fff48f">
+                        <Frame Padding="2" BackgroundColor="#668161">
+                            <Grid Margin="2" Padding="5" BackgroundColor="WhiteSmoke" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="5" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="5" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="5" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" >
+                                    <Label Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="Created at " />
+                                    <Label Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding Info.History.Created}" />
+                                </StackLayout>
+
+                                <Label Grid.Row="2" Grid.Column="0" Text="From:" />
+                                <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Info.Spec.FromAddress}" IsEnabled="False"/>
+
+                                <Editor Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Info.Spec.Parcel.Description}" IsEnabled="False" />
+
+                                <StackLayout Grid.Row="6" Grid.ColumnSpan="2">
+                                    <Button Text="Accept delivery" IsVisible="{Binding AcceptDeliveryAvailable}" 
+                                            Command="{Binding AcceptDeliveryCommand}" AutomationId="btnDrvAccept"  />
+                                    <Button Text="Details" IsVisible="{Binding ShowDetailsAvailable}" 
+                                            Command="{Binding ShowDetailsCommand}" AutomationId="btnDrvDetails" />
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+
+    <Frame Grid.Row="0" IsVisible="{Binding NotWorking}" BackgroundColor="LightGray" VerticalOptions="FillAndExpand">
+        <Grid Margin="2" Padding="5" BackgroundColor="WhiteSmoke" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="1" Grid.Column="0" Text="CarDesignation:" />
+            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CarDesignation}" AutomationId="txtDrvDesign" />
+
+            <Label Grid.Row="3" Grid.Column="0" Text="CarDescription:" />
+            <Editor Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding CarDescription}" AutomationId="txtDrvDescr" />
+        </Grid>
+    </Frame>
+
+    <StackLayout Grid.Row="1" >
+        <Button Text="Start work" IsVisible="{Binding NotWorking}" Command="{Binding StartDriveCommand}" AutomationId="btnDrvStart" />
+        <Button Text="Finish work" IsVisible="{Binding OpenForOrders}" Command="{Binding StopDriveCommand}" AutomationId="btnDrvStop" />
+    </StackLayout>
+</Grid>

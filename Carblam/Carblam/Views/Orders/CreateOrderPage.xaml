@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      x:Class="Carblam.Views.Orders.CreateOrderPage"
+      xmlns:vu="clr-namespace:Carblam.Views.Util"
+      xmlns:views="clr-namespace:Carblam.Views"
+      Visual="Material">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <vu:OrderRouteView Grid.Row="0" SelectedMapLocation="{Binding SelectedLoc,Mode=TwoWay}"
+                       BringMapLocsIntoViewMapCommand="{Binding BringLocsIntoViewMapCommand, Mode=OneWayToSource}"
+                       BringMapPositionIntoViewMapCommand="{Binding BringPositionIntoViewMapCommand, Mode=OneWayToSource}"
+                       OnMapLocSelectedCommand="{Binding PreSelectLocCommand}"
+                       MapLocations="{Binding DisplayedMapLocs}" MapRoutes="{Binding DisplayedMapRoutes}">
+    </vu:OrderRouteView>
+    
+    <StackLayout Grid.Row="1" >
+        <Label Text="Choose location on the map" IsVisible="{Binding PreSelectingLoc}" />
+        <Label Text="{Binding SelectedLoc.Label}" IsVisible="{Binding SelectingLoc}" />
+        <Button Text="Cancel" IsVisible="{Binding PreSelectingLoc}" Command="{Binding CancelLocSelectionCommand}" AutomationId="btnLookupCancel" />
+        <Button Text="Take this location" IsVisible="{Binding SelectingLoc}" Command="{Binding SelectLocCommand}" AutomationId="btnLookupTake" />
+    </StackLayout>
+
+    <Expander Grid.Row="2" x:Name="paramsArea" IsExpanded="{Binding IsMapCollapsed,Mode=TwoWay}">
+        <Expander.Header>
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Text="Order parameters" />
+
+                <Label Grid.Column="1" FontAttributes="Bold">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding IsExpanded,Source={x:Reference paramsArea}}" Value="True" TargetType="Label">
+                            <Setter Property="Label.Text" Value="v" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsExpanded,Source={x:Reference paramsArea}}" Value="False" TargetType="Label">
+                            <Setter Property="Label.Text" Value="^" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </Expander.Header>
+        <Expander.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ListView Grid.Row="0" IsVisible="{Binding LocsList}" ItemsSource="{Binding DisplayedMapLocs}"
+                          SelectedItem="{Binding SelectedLoc,Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell >
+                                <Label Padding="10" Text="{Binding Label}" FontSize="20" LineBreakMode="WordWrap" />
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Triggers>
+                        <EventTrigger Event="ItemSelected" >
+                            <views:PropertyTriggerAction>
+                                <views:PropertyTriggerAction.BindableSetters>
+                                    <views:BindableSetter Target="{Binding IsMapCollapsed,Mode=TwoWay}" Source="False"
+                                                          BindingContext="{Binding BindingContext,Source={x:Reference paramsArea}}"/>
+                                </views:PropertyTriggerAction.BindableSetters>
+                            </views:PropertyTriggerAction>
+                        </EventTrigger>
+                    </ListView.Triggers>
+                </ListView>
+                <ScrollView Grid.Row="1" IsVisible="{Binding OrderForm}">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="1" Grid.Column="0" Text="From:" />
+                        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding From.Address}" AutomationId="txtFromAddr" />
+                        <Button Grid.Row="1" Grid.Column="2" Text="Lookup" Command="{Binding LookupFromCommand}" AutomationId="btnLookupFrom" />
+
+                        <Label Grid.Row="3" Grid.Column="0" Text="To:" />
+                        <Entry Grid.Row="3" Grid.Column="1" Text="{Binding To.Address}" AutomationId="txtToAddr" />
+                        <Button Grid.Row="3" Grid.Column="2" Text="Lookup" Command="{Binding LookupToCommand}" AutomationId="btnLookupTo" />
+
+                        <Label Grid.Row="5" Grid.Column="0" Text="Receiver:" />
+                        <Entry Grid.Row="5" Grid.Column="1" Text="{Binding ReceiverLogin}" AutomationId="txtRecipient" />
+
+                        <Label Grid.Row="7" Grid.Column="0" Text="Parcel&#x0d;&#x0a;description:" />
+                        <Editor Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ParcelDescription}" AutomationId="txtDescr" />
+
+                        <Label Grid.Row="9" Grid.Column="0" Text="Private&#x0d;&#x0a;message:" />
+                        <Editor Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ConfirmationMessage}" AutomationId="txtMsg" />
+
+                        <Button Grid.Row="11" Grid.ColumnSpan="2" Text="Create delivery!" Command="{Binding CreateOrderCommand}" AutomationId="btnCreate" />
+
+                    </Grid>
+                </ScrollView>
+            </Grid>
+        </Expander.Content>
+    </Expander>
+</Grid>

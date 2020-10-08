@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CarblamSvcSpec"
+           targetNamespace="CarblamSvcSpec"
+           elementFormDefault="qualified"
+           xmlns="CarblamSvcSpec"
+           xmlns:mstns="CarblamSvcSpec"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Region profile management -->
+
+  <xs:element name="Ok" type="OkType" />
+
+  <xs:complexType name="OkType">
+  </xs:complexType>
+
+  <xs:element name="RegisterSpec" type="RegisterSpecType" />
+
+  <xs:complexType name="RegisterSpecType">
+    <xs:attribute name="Login" type="string" use="required" />
+    <xs:attribute name="Password" type="string" use="required" />
+    <xs:attribute name="Email" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="RequestActivationSpec" type="RequestActivationSpecType" />
+
+  <xs:complexType name="RequestActivationSpecType">
+    <xs:attribute name="Email" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ChangePasswordSpec" type="ChangePasswordSpecType" />
+
+  <xs:complexType name="ChangePasswordSpecType">
+    <!--<xs:attribute name="OldPassword" type="string" use="required" />-->
+    <xs:attribute name="NewPassword" type="string" use="required" />
+    <xs:attribute name="Email" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ChangeEmailSpec" type="ChangeEmailSpecType" />
+
+  <xs:complexType name="ChangeEmailSpecType">
+    <xs:attribute name="Password" type="string" use="required" />
+    <xs:attribute name="OldEmail" type="string" use="required" />
+    <xs:attribute name="NewEmail" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ResetPasswordSpec" type="ResetPasswordSpecType"/>
+
+  <xs:complexType name="ResetPasswordSpecType">
+    <xs:attribute name="Login" type="string" use="required" />
+    <xs:attribute name="Email" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="LoginSpec" type="LoginSpecType"/>
+
+  <xs:complexType name="LoginSpecType">
+    <xs:attribute name="Login" type="string" use="required" />
+    <xs:attribute name="Password" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ProfileFootprintInfo" type="ProfileFootprintInfoType"/>
+
+  <xs:complexType name="ProfileFootprintInfoType">
+    <xs:attribute name="Login" type="string" use="required" />
+    <xs:attribute name="EmailFootprint" type="string" use="required" />
+    <xs:attribute name="IsActivated" type="bool" use="required" />
+  </xs:complexType>
+
+  <!-- EndRegion -->
+
+  <!-- Region orders -->
+
+  <xs:element name="OrderSpec" type="OrderSpecType" />
+
+  <xs:complexType name="OrderSpecType">
+    <xs:sequence>
+      <xs:element name="FromAddress" type="string" />
+      <xs:element name="FromLocation" type="LocationType" />
+      <xs:element name="ToAddress" type="string" />
+      <xs:element name="ToLocation" type="LocationType" />
+      <xs:element name="ConfirmMessage" type="string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Parcel" type="ParcelInfoType" />
+    </xs:sequence>
+    <xs:attribute name="ReceiverLogin" type="string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="OrderInfo" type="OrderInfoType" />
+
+  <xs:complexType name="OrderInfoType">
+    <xs:sequence>
+      <xs:element name="Spec" type="OrderSpecType" />
+      <xs:element name="Car" type="CarInfoType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="History" type="OrderHistoryInfoType" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="Status" type="OrderStatusType" use="required" />
+    <xs:attribute name="IsMyOutcome" type="bool" use="required" />
+    <xs:attribute name="IsMyIncome" type="bool" use="required" />
+    <xs:attribute name="IsMyBaggage" type="bool" use="required" />
+    <xs:attribute name="Id" type="long" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="OrderHistoryInfoType">
+    <xs:sequence>
+      <xs:element name="CreatedTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ConfirmedTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="AcceptedTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LoadingTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LoadedTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DeliveredTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="FinishedTicks" type="long" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CancelledTicks" type="long" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="OrderInfoList" type="OrderInfoListType" />
+
+  <xs:complexType name="OrderInfoListType">
+    <xs:choice>
+      <xs:element name="OrderInfo" type="OrderInfoType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="LocationType" >
+    <xs:attribute name="Latitude" type="double" use="required" />
+    <xs:attribute name="Longitude" type="double" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ParcelInfoType" >
+    <xs:sequence>
+      <xs:element name="Description" type="string" />
+    </xs:sequence>
+    <xs:attribute name="Weight" type="double" use="required" />
+    <xs:attribute name="Width" type="double" use="required" />
+    <xs:attribute name="Height" type="double" use="required" />
+    <xs:attribute name="Length" type="double" use="required" />
+  </xs:complexType>
+
+  <!-- EndRegion -->
+
+  <!-- Region drivers -->
+
+  <xs:element name="StartWorkSpec" type="StartWorkSpecType" />
+  
+  <xs:complexType name="StartWorkSpecType" >
+    <xs:sequence>
+      <xs:element name="Description" type="string" />
+    </xs:sequence>
+    <xs:attribute name="Designation" type="string" use="required" />
+    <xs:attribute name="WeightLimit" type="double" use="required" />
+    <xs:attribute name="Width" type="double" use="required" />
+    <xs:attribute name="Height" type="double" use="required" />
+    <xs:attribute name="Length" type="double" use="required" />
+  </xs:complexType>
+
+  <xs:element name="CarInfo" type="CarInfoType" />
+
+  <xs:complexType name="CarInfoType" >
+    <xs:sequence>
+      <xs:element name="Spec" type="StartWorkSpecType" />
+      <xs:element name="Location" type="LocationType" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="CarInfoList" type="CarInfoListType" />
+
+  <xs:complexType name="CarInfoListType">
+    <xs:choice>
+      <xs:element name="CarInfo" type="CarInfoType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="UpdateLocationSpec" type="LocationType" />
+
+  <!-- EndRegion -->
+
+  <!-- Region Simple types -->
+
+  <xs:simpleType name="Guid">
+    <xs:restriction base="string">
+      <xs:pattern value="^({)?(?(1)|(\()?)[0-9A-F]{8}(-)?([0-9A-F]{4}(?(3)-)){3}[0-9A-F]{12}(?(1)}|(?(2)\)))$" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="word">
+    <xs:restriction base="string">
+      <xs:pattern value="[\w]+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OrderStatusType">
+    <xs:restriction base="string">
+      <xs:enumeration value="Created" />
+      <xs:enumeration value="Confirmed" />
+      <xs:enumeration value="Accepted" />
+      <xs:enumeration value="Loading" />
+      <xs:enumeration value="InProgress" />
+      <xs:enumeration value="Unloading" />
+      <xs:enumeration value="Done" />
+      <xs:enumeration value="Canceled" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Stamp" type="StampInfoType" />
+
+  <xs:complexType name="StampInfoType">
+    <xs:attribute name="Value" type="long" use="required" />
+  </xs:complexType>
+
+
+  <!-- EndRegion -->
+
+  <!-- Region builtins-->
+
+  <xs:simpleType name="double">
+    <xs:restriction base="xs:double" />
+  </xs:simpleType>
+
+  <xs:simpleType name="int">
+    <xs:restriction base="xs:int" />
+  </xs:simpleType>
+
+  <xs:simpleType name="long">
+    <xs:restriction base="xs:long" />
+  </xs:simpleType>
+
+  <xs:simpleType name="string">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="bool">
+    <xs:restriction base="xs:boolean" />
+  </xs:simpleType>
+
+  <xs:element name="ErrorInfo" type="ErrorInfoType" />
+
+  <xs:complexType name="ErrorInfoType">
+    <xs:sequence>
+      <xs:element name="Message" type="xs:string" />
+      <xs:element name="StackTrace" type="xs:string" />
+      <xs:element name="InnerError" type="ErrorInfoType" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="TypeName" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ExtendedErrorInfo" type="ExtendedErrorInfoType" />
+
+  <xs:complexType name="ExtendedErrorInfoType">
+    <xs:complexContent>
+      <xs:extension base="ErrorInfoType">
+        <xs:sequence>
+          <xs:element name="RawErrorInfo" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- EndRegion -->
+
+</xs:schema>
